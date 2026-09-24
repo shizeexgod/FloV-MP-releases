@@ -1,9 +1,13 @@
-# FloV:MP — установка сервера на Windows
+# FloV:MP — установка сервера
 
-Версия 1.0.4 (стабильная). Нужен ключ лицензии (выдаётся при покупке, вид
-`FLV-XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX`).
+Актуальная версия — **1.0.6 Beta** ([что нового](https://github.com/shizeexgod/FloV-MP-releases/releases/latest)).
+Команды ниже всегда ставят последнюю версию. Нужен ключ лицензии (выдаётся
+при покупке, вид `FLV-XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX`).
 
----
+- [Windows](#windows)
+- [Linux (Ubuntu / Debian)](#linux-ubuntu--debian)
+
+# Windows
 
 ## Способ 1. Одной командой
 
@@ -29,13 +33,13 @@ cd C:\FloVMP
 Ключ возьмётся из установленного `config\flovmp.env`. Если установлена
 последняя версия, ничего не скачивается.
 
-### Бета-версия
+### Конкретная версия
 
-Стабильная версия ставится командой выше. Чтобы поставить бету (в ней новое
-меню Esc, серверный подсчёт урона, автопереподключение), добавьте `-Tag`:
+Поставить именно определённый релиз (например, чтобы вернуться на прошлый) —
+добавьте `-Tag`:
 
 ```powershell
-.\get.ps1 -GitHub shizeexgod/FloV-MP-releases -Tag v1.0.5-beta -Key FLV-XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX
+.\get.ps1 -GitHub shizeexgod/FloV-MP-releases -Tag v1.0.6-beta -Key FLV-XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX
 ```
 
 ## Способ 2. Архивом, в один клик
@@ -51,14 +55,12 @@ cd C:\FloVMP
 
 ## Способ 3. Из полного пакета (без интернета на сервере)
 
-Скачайте `flovmp-server-1.0.4-windows.zip`, распакуйте во временную папку и
+Скачайте `flovmp-server-<версия>-windows.zip` из [последнего релиза](https://github.com/shizeexgod/FloV-MP-releases/releases/latest), распакуйте во временную папку и
 из неё выполните:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\install.ps1 -InstallDir "C:\FloVMP" -LicenseKey FLV-XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX
 ```
-
----
 
 ## После установки
 
@@ -89,6 +91,81 @@ powershell -ExecutionPolicy Bypass -File .\install.ps1 -InstallDir "C:\FloVMP" -
 чужое не тронет. Совпадения есть — установка остановится и покажет список,
 ничего не изменив; продолжить, сохранив чужие файлы в резервную копию, можно
 ключом `-Force`.
+
+---
+
+# Linux (Ubuntu / Debian)
+
+Нужны root-права (`sudo`). Всё остальное — .NET 8, MariaDB, служба systemd,
+порты в файрволе — установщик поставит и настроит сам.
+
+## Установка
+
+```bash
+curl -fsSLo flovmp-get.sh https://github.com/shizeexgod/FloV-MP-releases/releases/latest/download/get.sh
+sudo bash flovmp-get.sh --github shizeexgod/FloV-MP-releases --key FLV-XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX
+```
+
+Сервер встанет в `/opt/flovmp` и запустится как служба `flovmp`. Основные
+параметры (их можно добавить к команде установки):
+
+| Параметр | Что делает |
+|---|---|
+| `--dir /srv/flovmp` | другая папка установки |
+| `--name "Мой сервер"` | название сервера (только при первой установке) |
+| `--owner-sc <SocialClubId>` | сразу выдать себе права основателя |
+| `--port 7788` | игровой порт |
+| `--no-db` | без MariaDB — всё в файлах |
+
+Подпись релиза и SHA-256 пакета проверяются так же, как на Windows: подменить
+пакет нельзя.
+
+## Обновление
+
+```bash
+sudo bash /opt/flovmp/update.sh
+```
+
+Ключ и источник обновлений берутся из установки. Если стоит последняя
+версия, ничего не скачивается. Конкретный релиз — `--tag v1.0.6-beta`.
+
+Если сервер ставили версией **1.0.5 и раньше** (в папке ещё нет `update.sh`),
+первый раз обновите командой установки без ключа — дальше хватит `update.sh`:
+
+```bash
+curl -fsSLo flovmp-get.sh https://github.com/shizeexgod/FloV-MP-releases/releases/latest/download/get.sh
+sudo bash flovmp-get.sh --github shizeexgod/FloV-MP-releases
+```
+
+## Управление сервером
+
+```bash
+sudo systemctl status flovmp        # состояние
+sudo systemctl restart flovmp       # перезапуск
+sudo journalctl -u flovmp -f        # журнал службы
+tail -f /opt/flovmp/server/server.log
+```
+
+Настройки — те же, что на Windows: `/opt/flovmp/server/server.toml` и
+`/opt/flovmp/server/config/client.cfg`, свой код — `/opt/flovmp/gamemode`
+(сборка: `sudo /opt/flovmp/gamemode/build.sh --install-sdk --restart`).
+
+## Второй сервер на той же машине
+
+Укажите свою папку, службу, порт и базу, чтобы серверы не мешали друг другу:
+
+```bash
+sudo bash flovmp-get.sh --github shizeexgod/FloV-MP-releases --key FLV-... \
+  --dir /opt/flovmp2 --service flovmp2 --port 7800 --db-name flovmp_server2 --db-user flovmp2
+```
+
+## Если сервер не стартует
+
+- `Failed to create host` — занят порт или в ядре выключен IPv6
+  (`ipv6.disable=1` в `/etc/default/grub`). Установщик предупреждает об этом.
+- `[License]` в журнале — проверьте ключ в `/opt/flovmp/config/flovmp.env`.
+
+---
 
 ## Поддержка
 
