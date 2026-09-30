@@ -1,6 +1,6 @@
 # FloV:MP — установка сервера
 
-Актуальная версия — **1.0.12 Beta** ([что нового](https://github.com/shizeexgod/FloV-MP-releases/releases/latest)).
+Актуальная версия — **1.0.13 Beta** ([что нового](https://github.com/shizeexgod/FloV-MP-releases/releases/latest)).
 Команды ниже всегда ставят последнюю версию. Нужен ключ лицензии (выдаётся
 при покупке, вид `FLV-XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX`).
 
@@ -19,13 +19,9 @@ cd C:\FloVMP
 powershell -ExecutionPolicy Bypass -Command "iwr https://github.com/shizeexgod/FloV-MP-releases/releases/latest/download/get.ps1 -OutFile get.ps1; .\get.ps1 -GitHub shizeexgod/FloV-MP-releases -Key FLV-XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX"
 ```
 
-Что произойдёт: сначала скачается только установщик `get.ps1`. Он проверит ключ
-у сервера лицензий FloV:MP — с неверным ключом дальше ничего не скачивается.
-Потом скачается описание последнего релиза, проверится его подпись ключом
-FloV:MP, скачается пакет сервера, сверится SHA-256, и сервер установится
-**в текущую папку** (ту, в которую вы зашли через `cd`).
-
-`-Key` можно не писать — установщик сам попросит ввести ключ.
+Что произойдёт: скачается описание последнего релиза, проверится его подпись
+ключом FloV:MP, скачается пакет сервера, сверится SHA-256, и сервер
+установится **в текущую папку** (ту, в которую вы зашли через `cd`).
 
 Обновление потом — та же команда без `-Key`:
 
@@ -43,7 +39,7 @@ cd C:\FloVMP
 добавьте `-Tag`:
 
 ```powershell
-.\get.ps1 -GitHub shizeexgod/FloV-MP-releases -Tag v1.0.12-beta -Key FLV-XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX
+.\get.ps1 -GitHub shizeexgod/FloV-MP-releases -Tag v1.0.13-beta -Key FLV-XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX
 ```
 
 ## Способ 2. Архивом, в один клик
@@ -110,9 +106,6 @@ curl -fsSLo flovmp-get.sh https://github.com/shizeexgod/FloV-MP-releases/release
 sudo bash flovmp-get.sh --github shizeexgod/FloV-MP-releases --key FLV-XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX
 ```
 
-Без `--key` установщик сам спросит ключ. Сначала он проверяет ключ у сервера
-лицензий FloV:MP и только потом скачивает файлы сервера.
-
 Сервер встанет в `/opt/flovmp` и запустится как служба `flovmp`. Основные
 параметры (их можно добавить к команде установки):
 
@@ -134,7 +127,7 @@ sudo bash /opt/flovmp/update.sh
 ```
 
 Ключ и источник обновлений берутся из установки. Если стоит последняя
-версия, ничего не скачивается. Конкретный релиз — `--tag v1.0.12-beta`.
+версия, ничего не скачивается. Конкретный релиз — `--tag v1.0.13-beta`.
 
 Если сервер ставили версией **1.0.5 и раньше** (в папке ещё нет `update.sh`),
 первый раз обновите командой установки без ключа — дальше хватит `update.sh`:
