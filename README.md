@@ -19,9 +19,13 @@ cd C:\FloVMP
 powershell -ExecutionPolicy Bypass -Command "iwr https://github.com/shizeexgod/FloV-MP-releases/releases/latest/download/get.ps1 -OutFile get.ps1; .\get.ps1 -GitHub shizeexgod/FloV-MP-releases -Key FLV-XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX"
 ```
 
-Что произойдёт: скачается описание последнего релиза, проверится его подпись
-ключом FloV:MP, скачается пакет сервера, сверится SHA-256, и сервер
-установится **в текущую папку** (ту, в которую вы зашли через `cd`).
+Что произойдёт: сначала скачается только установщик `get.ps1`. Он проверит ключ
+у сервера лицензий FloV:MP — с неверным ключом дальше ничего не скачивается.
+Потом скачается описание последнего релиза, проверится его подпись ключом
+FloV:MP, скачается пакет сервера, сверится SHA-256, и сервер установится
+**в текущую папку** (ту, в которую вы зашли через `cd`).
+
+`-Key` можно не писать — установщик сам попросит ввести ключ.
 
 Обновление потом — та же команда без `-Key`:
 
@@ -105,6 +109,9 @@ powershell -ExecutionPolicy Bypass -File .\install.ps1 -InstallDir "C:\FloVMP" -
 curl -fsSLo flovmp-get.sh https://github.com/shizeexgod/FloV-MP-releases/releases/latest/download/get.sh
 sudo bash flovmp-get.sh --github shizeexgod/FloV-MP-releases --key FLV-XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX
 ```
+
+Без `--key` установщик сам спросит ключ. Сначала он проверяет ключ у сервера
+лицензий FloV:MP и только потом скачивает файлы сервера.
 
 Сервер встанет в `/opt/flovmp` и запустится как служба `flovmp`. Основные
 параметры (их можно добавить к команде установки):
