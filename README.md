@@ -1,6 +1,6 @@
 # FloV:MP — установка сервера
 
-Актуальная версия — **1.0.15 Beta** ([что нового](https://github.com/shizeexgod/FloV-MP-releases/releases/latest)).
+Актуальная версия — **1.0.16 Beta** ([что нового](https://github.com/shizeexgod/FloV-MP-releases/releases/latest)).
 Команды ниже всегда ставят последнюю версию. Нужен ключ лицензии (выдаётся
 при покупке, вид `FLV-XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX`).
 
@@ -43,7 +43,7 @@ cd C:\FloVMP
 добавьте `-Tag`:
 
 ```powershell
-.\get.ps1 -GitHub shizeexgod/FloV-MP-releases -Tag v1.0.15-beta -Key FLV-XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX
+.\get.ps1 -GitHub shizeexgod/FloV-MP-releases -Tag v1.0.16-beta -Key FLV-XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX
 ```
 
 ## Способ 2. Архивом, в один клик
@@ -134,7 +134,7 @@ sudo bash /opt/flovmp/update.sh
 ```
 
 Ключ и источник обновлений берутся из установки. Если стоит последняя
-версия, ничего не скачивается. Конкретный релиз — `--tag v1.0.15-beta`.
+версия, ничего не скачивается. Конкретный релиз — `--tag v1.0.16-beta`.
 
 Если сервер ставили версией **1.0.5 и раньше** (в папке ещё нет `update.sh`),
 первый раз обновите командой установки без ключа — дальше хватит `update.sh`:
